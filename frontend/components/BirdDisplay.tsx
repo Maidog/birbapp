@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { birdService } from '../services/birdService';
 
 const BirdDisplay: React.FC<{ selectedBird: string }> = ({ selectedBird }) => {
-  const [imageUrl, setImageUrl] = useState<string>('');
+  const [imageUrl, setImageUrl] = useState<string>('noBird.png');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
 
   useEffect(() => {
     const loadBirdImage = async () => {
       if (!selectedBird) {
-        setImageUrl('src/assets/images/placeholder.png');
+        setImageUrl('noBird.png');
         return;
       }
 
@@ -21,7 +21,7 @@ const BirdDisplay: React.FC<{ selectedBird: string }> = ({ selectedBird }) => {
         setImageUrl(url);
       } catch (err) {
         setError('画像の読み込みに失敗しました');
-        setImageUrl('src/assets/images/placeholder.png');
+        setImageUrl('noBird.png');
       } finally {
         setLoading(false);
       }
@@ -45,11 +45,13 @@ const BirdDisplay: React.FC<{ selectedBird: string }> = ({ selectedBird }) => {
             {error}
           </div>
         ) : (
-          <div className="relative w-full aspect-video max-w-2xl">
+          <div className="flex justify-center w-full">
             <img
               src={imageUrl}
               alt={`${selectedBird}の画像`}
-              className="w-full h-full object-cover rounded-lg shadow-lg"
+              className="rounded-lg shadow-lg max-w-full h-auto"
+              style={{ maxHeight: '600px' }}
+              width="500"
             />
           </div>
         )}

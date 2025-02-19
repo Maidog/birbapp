@@ -5,8 +5,9 @@ import { birdService } from '../services/birdService'
 interface Bird {
   id: string;
   name: string;
-  description: string;
-  imageUrl: string;
+  sciName: string;
+  status: string;
+  images: string[];
 }
 
 function App() {
@@ -48,10 +49,12 @@ function App() {
     )
   }
 
+  const selectedBirdData = birds.find(bird => bird.name === selectedBird)
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-4xl mx-auto space-y-6">
-        <h1 className="text-3xl font-bold text-gray-900">鳥類ビューア</h1>
+        <h1 className="text-3xl font-bold text-gray-900">BIRDEX</h1>
         
         <div className="bg-white p-4 rounded-lg shadow">
           <select 
@@ -64,6 +67,13 @@ function App() {
               <option key={bird.id} value={bird.name}>{bird.name}</option>
             ))}
           </select>
+
+          {selectedBirdData && (
+            <div className="mt-4 text-gray-700">
+              <p><span className="font-semibold">Scientific Name:</span> {selectedBirdData.sciName}</p>
+              <p><span className="font-semibold">Conservation Status:</span> {selectedBirdData.status}</p>
+            </div>
+          )}
         </div>
 
         <BirdDisplay selectedBird={selectedBird} />
