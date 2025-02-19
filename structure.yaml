@@ -1,0 +1,86 @@
+src:
+  structure.yaml:
+    content: |-
+      鳥の種類を取得するAPIを利用したミニWebアプリのプロジェクト構造
+      - フロントエンド:
+        * ユーザーインターフェース (TypeScript, React)
+        * APIとの通信 (TypeScript)
+      - バックエンド:
+        * APIキー管理
+        * 鳥の種類取得APIとの連携 (TypeScript, Node.js)
+      - 依存関係:
+        * フロントエンドはバックエンドのAPIエンドポイントに依存
+        * バックエンドは鳥の種類取得APIに依存
+      - エージェント選定理由:
+        * claude-3-5-sonnet-20241022はフロントエンドとバックエンドの連携を含む小規模なプロジェクトの構造定義に適しています。
+      - API選定理由:
+        * 鳥の種類取得API (具体的なAPI名は不明ですが、外部APIとして扱います)
+    dependency: []
+    agent: "claude-3-5-sonnet-20241022"
+    api: []
+  frontend:
+    components:
+      BirdDisplay.tsx:
+        content: |-
+          鳥の画像と情報を表示するコンポーネント
+          - バックエンドから取得した鳥の情報を表示
+          - 画像の読み込み中はローディングインジケーターを表示
+          - エラー発生時はエラーメッセージを表示
+          - レスポンシブデザイン対応
+          agent選定理由: claude-3-5-sonnet-20241022はUIコンポーネントの表示ロジックと状態管理の定義に適しています。
+          api選定理由: 画像表示には特定のAPIを使用しないため、空欄です。
+        dependency:
+          - src/frontend/services/birdService.ts
+        agent: "claude-3-5-sonnet-20241022"
+        api: []
+      BirdSelector.tsx:
+        content: |-
+          鳥の種類を選択するコンポーネント
+          - バックエンドから取得した鳥のリストを表示
+          - ユーザーが選択した鳥の種類をBirdDisplayコンポーネントに渡す
+          - 検索機能の実装
+          - スタイリングとアクセシビリティの考慮
+          agent選定理由: claude-3-5-sonnet-20241022はUIコンポーネントのインタラクションとデータフローの定義に適しています。
+          api選定理由: 鳥リスト取得には特定のAPIを使用しないため、空欄です。
+        dependency:
+          - src/frontend/services/birdService.ts
+        agent: "claude-3-5-sonnet-20241022"
+        api: []
+    services:
+      birdService.ts:
+        content: |-
+          バックエンドAPIと通信するためのサービス
+          - getBirds(): 鳥のリストを取得する関数
+          - getBirdImage(birdName: string): 指定された鳥の画像URLを取得する関数
+          - エラーハンドリングの実装
+          - APIキーの管理 (フロントエンドでの直接的な管理は避けるべきですが、この例では簡略化のため)
+          agent選定理由: claude-3-5-sonnet-20241022はAPIとの通信ロジックとデータ処理の定義に適しています。
+          api選定理由: バックエンドAPIとの通信を行うため、空欄です。
+        dependency:
+          - src/backend/server.ts
+        agent: "claude-3-5-sonnet-20241022"
+        api: []
+  backend:
+    server.ts:
+        content: |-
+          Express.jsを使用したバックエンドサーバー
+          - /birds: 鳥のリストを返すエンドポイント
+          - /bird-image: 指定された鳥の画像を返すエンドポイント
+          - APIキーを使用して鳥の種類取得APIと連携
+          - CORS設定
+          - エラーハンドリング
+          agent選定理由: gpt-4oはバックエンドのAPIエンドポイントと外部API連携の定義に適しています。
+          api選定理由: 鳥の種類取得API (具体的なAPI名は不明ですが、外部APIとして扱います)
+        dependency: []
+        agent: "gpt-4o"
+        api: [ "鳥の種類取得API (具体的なAPI名)" ]
+  assets:
+      images:
+        placeholder.png:
+          content: |-
+            鳥の画像がロードされるまでのプレースホルダー画像
+            agent選定理由: lumalabs-photon-1
+            api選定理由: なし
+          dependency: []
+          agent: "lumalabs-photon-1"
+          api: []
